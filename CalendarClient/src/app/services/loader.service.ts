@@ -13,7 +13,6 @@ export class LoaderService {
     showLoader(value: boolean): void {
         this._showLoader = value
         this.loader$.next(value)
-        console.log(value)
     }
 
     shootLoader(milliseconds: number) {

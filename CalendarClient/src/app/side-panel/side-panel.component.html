@@ -1,53 +1,29 @@
 <div class="side-panel-wrapper">
     <div class="side-panel-placeholder"></div>
     <div class="side-panel-content" [ngClass]="{ expanded: isExpanded }">
-        <div class="icon-container" routerLink="/" routerLinkActive="active">
-            <img
-                src="../../assets/icons/house-solid.svg"
-                alt="Home"
-                title="Home"
-            />
+        <ng-container *ngFor="let element of sidePanelItems">
             <div
-                class="labelText animation"
-                [ngStyle]="{ visibility: isExpanded ? 'visible' : 'hidden' }"
-                [ngClass]="{ textExpanded: isExpanded }"
+                class="icon-container"
+                [routerLink]="element.route"
+                [routerLinkActive]="element.route ? 'active' : ''"
+                (click)="handleItemClick(element)"
             >
-                Home
+                <img
+                    [src]="element.source"
+                    [alt]="element.label"
+                    [title]="element.label"
+                />
+                <div
+                    class="labelText animation"
+                    [ngStyle]="{
+                        visibility: isExpanded ? 'visible' : 'hidden'
+                    }"
+                    [ngClass]="{ textExpanded: isExpanded }"
+                >
+                    {{ element.label }}
+                </div>
             </div>
-        </div>
-        <div
-            class="icon-container"
-            routerLink="/calendar"
-            routerLinkActive="active"
-        >
-            <img
-                src="../../assets/icons/calendar-solid.svg"
-                alt="Calendar"
-                title="Calendar"
-            />
-            <div
-                class="labelText animation"
-                [ngStyle]="{ visibility: isExpanded ? 'visible' : 'hidden' }"
-                [ngClass]="{ textExpanded: isExpanded }"
-            >
-                Calendar
-            </div>
-        </div>
-        <div class="icon-container" (click)="expandCollapse()">
-            <img
-                src="../../assets/icons/angles-right-solid.svg"
-                [alt]="expandCollapseText"
-                [title]="expandCollapseText"
-                class="flip animation"
-            />
-            <div
-                class="labelText animation"
-                [ngStyle]="{ visibility: isExpanded ? 'visible' : 'hidden' }"
-                [ngClass]="{ textExpanded: isExpanded }"
-            >
-                Collapse
-            </div>
-        </div>
+        </ng-container>
     </div>
     <div *ngIf="isExpanded" class="dimmed-background animation"></div>
 </div>
