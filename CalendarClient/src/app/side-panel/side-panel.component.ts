@@ -28,10 +28,9 @@ export class SidePanelComponent implements OnInit {
     ]
 
     handleItemClick(item: SidePanelItem) {
-        if (item.click) {
-            item.click()
+        if (item.label === 'Collapse' || item.label === 'Expand') {
+            this.expandCollapse()
         }
-        this.expandCollapse()
 
         if (this.expandCollapseText !== 'Collapse') {
             setTimeout(() => {

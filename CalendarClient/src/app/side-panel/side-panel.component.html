@@ -12,6 +12,8 @@
                     [src]="element.source"
                     [alt]="element.label"
                     [title]="element.label"
+                    class="animation"
+                    [ngClass]="{ flip: element.click && isExpanded }"
                 />
                 <div
                     class="labelText animation"
