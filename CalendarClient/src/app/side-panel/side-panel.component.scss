@@ -1,0 +1,71 @@
+.side-panel-wrapper {
+    display: flex;
+}
+
+.side-panel-placeholder {
+    height: 100%;
+    width: 70px;
+    background-color: transparent;
+}
+
+.animation {
+    transition: all 0.5s ease-out;
+}
+
+.side-panel-content {
+    position: fixed;
+    height: 100%;
+    background-color: #212121;
+    color: #fff;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s ease-out;
+
+    .icon-container {
+        display: flex;
+
+        height: 60px;
+        width: 100%;
+
+        cursor: pointer;
+        img {
+            aspect-ratio: 1;
+            width: 50px;
+            padding-inline: 10px;
+        }
+
+        .labelText {
+            opacity: 0;
+            width: 130px;
+            display: flex;
+            transition: all 0.5s ease-out;
+            transition-delay: 0s;
+            justify-content: center;
+            align-items: center;
+        }
+        .labelText.textExpanded {
+            transition: all 0.5s;
+            transition-delay: 0.3s;
+            opacity: 1;
+        }
+    }
+    .icon-container:hover {
+        opacity: 0.7;
+    }
+    .icon-container:last-of-type {
+        margin-top: auto;
+    }
+}
+.side-panel-content:is(.expanded) {
+    width: 200px;
+    .flip {
+        transform: rotate(180deg);
+    }
+}
+.side-panel-content:not(.expanded) {
+    transition-delay: 0.3s;
+}
+.dimmed-background {
+    //TODO
+}
