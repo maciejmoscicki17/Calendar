@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router'
 import { CalendarComponent } from './calendar/calendar.component'
 import { HomeComponent } from './home/home.component'
 import { NotFoundComponent } from './not-found/not-found.component'
+import { DemoComponent } from './demo/demo.component'
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'calendar', component: CalendarComponent },
+    { path: 'calendar', component: DemoComponent },
     { path: '404', component: NotFoundComponent },
     { path: '**', redirectTo: '/404' },
 ]

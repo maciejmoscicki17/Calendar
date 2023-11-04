@@ -1,0 +1,41 @@
+<p-dialog
+    [(visible)]="showPDialog"
+    [header]="generateDayDescription()"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [resizable]="false"
+    [dismissableMask]="true"
+    (onHide)="closeDialog()"
+>
+    <div id="details-content">
+        <div *ngIf="data | async as events; else load">
+            <div *ngIf="events.length > 0">
+                <div
+                    *ngFor="let ev of events"
+                    class="data-card"
+                    [style.background-color]="ev.color"
+                    [style.color]="getContrastColor(ev.color)"
+                    [hidden]="hideOnDrag"
+                    [draggable]="ev.draggable"
+                    (dragstart)="dragStart(ev)"
+                    (dragend)="dragEnd(ev)"
+                    (click)="onClick(ev, $event)"
+                >
+                    {{ ev.description }}
+                </div>
+            </div>
+            <div *ngIf="events.length == 0">
+                {{ translationsEnum.brak_wynikow }}
+            </div>
+        </div>
+
+        <ng-template #load>
+            <p-skeleton
+                *ngFor="let _ of repeatedArray(10)"
+                width="100%"
+                styleClass="mb-2"
+                borderRadius="16px"
+            ></p-skeleton>
+        </ng-template>
+    </div>
+</p-dialog>

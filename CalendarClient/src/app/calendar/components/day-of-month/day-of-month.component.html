@@ -1,0 +1,50 @@
+<div
+    *ngIf="day"
+    class="proman-calendar-day"
+    (click)="setDay()"
+    (dragover)="$event.preventDefault()"
+    [style.background-color]="isCurrentMonth() ? 'white' : 'silver'"
+>
+    <div class="positioner">
+        <div class="day-container" (click)="goToDay()">
+            <div class="day-holder" [class.today]="isToday()">
+                {{ day.number }}
+            </div>
+        </div>
+        <div class="event-container">
+            <div
+                *ngIf="day.entries.length <= visibleEvents"
+                class="placeholder"
+            ></div>
+            <div
+                *ngIf="day.entries.length > visibleEvents"
+                class="dots"
+                (click)="openDialog(day, $event)"
+            >
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+
+            <ng-container *ngFor="let data of day.entries; let i = index">
+                <div
+                    *ngIf="
+                        i < visibleEvents - 1 ||
+                        day.entries.length === visibleEvents
+                    "
+                    class="event-card"
+                    [style.background-color]="data.color"
+                    [draggable]="data.draggable"
+                    (dragstart)="dragStart(data)"
+                    (click)="click(data)"
+                >
+                    <p
+                        [style.color]="getContrastColor(data.color)"
+                        class="event-opis"
+                        for="data"
+                    >
+                        {{ data.description }}
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
