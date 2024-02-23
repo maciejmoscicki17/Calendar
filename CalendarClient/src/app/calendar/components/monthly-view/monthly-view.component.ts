@@ -28,13 +28,13 @@ export class MonthlyViewComponent implements OnInit {
     detailsDay: Date = new Date()
 
     readonly days = [
-        TranslationsEnum.poniedzialek,
-        TranslationsEnum.wtorek,
-        TranslationsEnum.sroda,
-        TranslationsEnum.czwartek,
-        TranslationsEnum.piatek,
-        TranslationsEnum.sobota,
-        TranslationsEnum.niedziela,
+        TranslationsEnum.monday,
+        TranslationsEnum.tuesday,
+        TranslationsEnum.wednesday,
+        TranslationsEnum.thursday,
+        TranslationsEnum.friday,
+        TranslationsEnum.saturday,
+        TranslationsEnum.sunday,
     ]
 
     weeks: CalendarDay[][] = []
@@ -72,6 +72,7 @@ export class MonthlyViewComponent implements OnInit {
                     60 *
                     1000
         )
+
         this.weeks = []
         do {
             let week = new Array<CalendarDay>(7)
@@ -79,14 +80,20 @@ export class MonthlyViewComponent implements OnInit {
                 week[i] = new CalendarDay(
                     dateCopy.getDate(),
                     this.calendarService.data
-                        .filter(
-                            (x) =>
-                                x.start.toDateString() ==
-                                    dateCopy.toDateString() ||
-                                x.end.toDateString() ==
-                                    dateCopy.toDateString() ||
-                                (x.start < dateCopy && x.end > dateCopy)
-                        )
+                        .filter((x) => {
+                            const start = Date.parse(x.start)
+                            const end = Date.parse(x.end)
+                            const dc = dateCopy.getTime()
+                            let sd = new Date()
+                            sd.setTime(start)
+                            let ed = new Date()
+                            ed.setTime(end)
+                            return (
+                                start == dc ||
+                                end == dc ||
+                                (start < dc && end > dc)
+                            )
+                        })
                         .sort((x, y) => (x.start < y.start ? 0 : 1)),
                     dateCopy
                 )

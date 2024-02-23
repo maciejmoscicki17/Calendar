@@ -1,12 +1,16 @@
 <p-dialog
     [(visible)]="showPDialog"
-    [header]="generateDayDescription()"
     [modal]="true"
     [style]="{ width: '50vw' }"
     [resizable]="false"
     [dismissableMask]="true"
     (onHide)="closeDialog()"
 >
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold" style="color: red">{{
+            generateDayDescription()
+        }}</span>
+    </ng-template>
     <div id="details-content">
         <div *ngIf="data | async as events; else load">
             <div *ngIf="events.length > 0">
@@ -25,7 +29,7 @@
                 </div>
             </div>
             <div *ngIf="events.length == 0">
-                {{ translationsEnum.brak_wynikow }}
+                {{ translationsEnum.no_result }}
             </div>
         </div>
 

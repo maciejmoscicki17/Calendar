@@ -1,0 +1,91 @@
+.proman-calendar-day {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .positioner {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .day-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        height: min-content;
+    }
+    .event-card {
+        width: 90%;
+        height: 20px;
+        border-radius: 4px;
+        color: white;
+        font-size: 12px;
+
+        &[draggable] {
+            cursor: pointer;
+            padding-inline: 2px;
+        }
+    }
+    .event-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 2px;
+        align-items: center;
+        width: 100%;
+
+        label {
+            cursor: pointer;
+        }
+    }
+    .event-opis {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 20px;
+        text-align: center;
+        white-space: nowrap;
+        user-select: none;
+    }
+    .day-container {
+        position: relative;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+    }
+
+    .day-holder {
+        position: absolute;
+        height: 25px;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        top: 0;
+        text-align: center;
+        &:hover {
+            background-color: silver;
+        }
+    }
+    .placeholder {
+        all: unset;
+        width: 100%;
+        height: 20px;
+    }
+    .dots {
+        cursor: pointer;
+        width: 20%;
+        height: 20px;
+        display: grid;
+        place-items: center;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: silver;
+        }
+    }
+}

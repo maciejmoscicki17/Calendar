@@ -9,12 +9,12 @@ import {
 } from '@angular/core'
 import { CalendarTypeEnum, CalendarEntry, TranslationsEnum } from '../../models'
 
-import { Observable, Subscription } from 'rxjs'
+import { Observable, Subscription, of } from 'rxjs'
 import { CalendarService } from '../../services'
 @Component({
     selector: 'details-dialog',
     templateUrl: './details-dialog.component.html',
-    styleUrls: ['./details-dialog.component.scss'],
+    styleUrls: ['./details-dialog.component.scss', '../../styles.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsDialogComponent implements OnInit {
@@ -30,13 +30,13 @@ export class DetailsDialogComponent implements OnInit {
     @Output('onHide') onHide = new EventEmitter()
 
     readonly days = [
-        TranslationsEnum.poniedzialek,
-        TranslationsEnum.wtorek,
-        TranslationsEnum.sroda,
-        TranslationsEnum.czwartek,
-        TranslationsEnum.piatek,
-        TranslationsEnum.sobota,
-        TranslationsEnum.niedziela,
+        TranslationsEnum.monday,
+        TranslationsEnum.tuesday,
+        TranslationsEnum.wednesday,
+        TranslationsEnum.thursday,
+        TranslationsEnum.friday,
+        TranslationsEnum.saturday,
+        TranslationsEnum.sunday,
     ]
 
     constructor(

@@ -1,0 +1,32 @@
+.bn3637 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 2rem;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    backface-visibility: hidden;
+    border-radius: 3rem;
+    cursor: pointer;
+}
+.bn38 {
+    box-shadow: 0 0 0 1px gray inset;
+    border-color: transparent;
+    transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.bn38:hover {
+    background-color: #60605e;
+    color: white;
+    box-shadow: 0 0 0 1px transparent inset;
+}
+
+.btn-select {
+    user-select: none;
+}

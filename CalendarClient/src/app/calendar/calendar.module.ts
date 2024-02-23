@@ -6,14 +6,28 @@ import { DetailsDialogComponent } from './components/details-dialog/details-dial
 import { DialogModule } from 'primeng/dialog'
 import { SkeletonModule } from 'primeng/skeleton'
 import { MonthlyViewComponent } from './components/monthly-view/monthly-view.component'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ButtonModule } from 'primeng/button'
+import { ButtonComponent } from './components/button/button.component'
+import { NavigationComponent } from './components/navigation/navigation.component'
+import { TranslatePipe } from './pipes/translate.pipe'
 @NgModule({
     declarations: [
         CalendarComponent,
         DayOfMonthComponent,
         MonthlyViewComponent,
         DetailsDialogComponent,
+        ButtonComponent,
+        NavigationComponent,
+        TranslatePipe,
     ],
-    imports: [CommonModule, DialogModule, SkeletonModule],
+    imports: [
+        CommonModule,
+        DialogModule,
+        SkeletonModule,
+        BrowserAnimationsModule,
+        ButtonModule,
+    ],
     exports: [CalendarComponent],
 })
 export class CalendarModule {}

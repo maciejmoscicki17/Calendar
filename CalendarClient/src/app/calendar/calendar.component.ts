@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core'
 import { CalendarService, DataAccessService } from './services'
-import { CALENDAR_TOKEN } from './models'
+import { CALENDAR_TOKEN, CalendarTypeEnum, ICalendarService } from './models'
+import { TranslationService } from './services/translation.service'
 
 @Component({
     selector: 'calendar',
@@ -11,8 +12,17 @@ import { CALENDAR_TOKEN } from './models'
 export class CalendarComponent implements OnInit {
     constructor(
         @Inject(CALENDAR_TOKEN)
-        private providerService: CalendarService
+        private providerService: ICalendarService,
+        private calendarService: CalendarService,
+        private translationService: TranslationService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.providerService
+            .getEvents(new Date(), new Date(), [], CalendarTypeEnum.daily)
+            .subscribe((x) => {
+                this.calendarService.data = x
+                this.calendarService.$dataChanged.next(null)
+            })
+    }
 }

@@ -11,7 +11,6 @@ import {
     ICalendarService,
     TranslationsEnum,
 } from '../models'
-import { Observable } from 'rxjs'
 import { DataAccessService } from '.'
 
 @Injectable()
@@ -44,18 +43,18 @@ export class CalendarService implements OnDestroy {
     public $settingsChanged = new BehaviorSubject(this.settings)
 
     readonly months = [
-        TranslationsEnum.styczen,
-        TranslationsEnum.luty,
-        TranslationsEnum.marzec,
-        TranslationsEnum.kwiecien,
-        TranslationsEnum.maj,
-        TranslationsEnum.czerwiec,
-        TranslationsEnum.lipiec,
-        TranslationsEnum.sierpien,
-        TranslationsEnum.wrzesien,
-        TranslationsEnum.pazdziernik,
-        TranslationsEnum.listopad,
-        TranslationsEnum.grudzien,
+        TranslationsEnum.january,
+        TranslationsEnum.february,
+        TranslationsEnum.march,
+        TranslationsEnum.april,
+        TranslationsEnum.may,
+        TranslationsEnum.june,
+        TranslationsEnum.july,
+        TranslationsEnum.august,
+        TranslationsEnum.september,
+        TranslationsEnum.october,
+        TranslationsEnum.november,
+        TranslationsEnum.december,
     ]
 
     get intervalHeight() {
@@ -70,6 +69,7 @@ export class CalendarService implements OnDestroy {
         this.settings = new CalendarSettings()
         const date = new Date()
         this.currentDaySelection = new CalendarDay(date.getDate(), [], date)
+        this.getData()
     }
 
     setParams(date: Date, calendarType = CalendarTypeEnum.monthly) {
@@ -100,10 +100,14 @@ export class CalendarService implements OnDestroy {
                     startDate.setHours(0, 0, 0, 0)
                     let endDate = new Date(this.currentDate)
                     endDate.setHours(23, 59, 59, 999)
+
                     this.currentDaySelection = new CalendarDay(
                         this.currentDate.getDate(),
                         this.data.filter((x) => {
-                            return x.start <= endDate && x.end >= startDate
+                            return (
+                                x.start <= endDate.toDateString() &&
+                                x.end >= startDate.toDateString()
+                            )
                         }),
                         this.currentDate
                     )

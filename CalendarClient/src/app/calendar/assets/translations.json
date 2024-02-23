@@ -1,0 +1,104 @@
+{
+    "translations": [
+        {
+            "name": "january",
+            "en": "January",
+            "pl": "Styczeń"
+        },
+        {
+            "name": "february",
+            "en": "February",
+            "pl": "Luty"
+        },
+        {
+            "name": "march",
+            "en": "March",
+            "pl": "Marzec"
+        },
+        {
+            "name": "april",
+            "en": "April",
+            "pl": "Kwiecień"
+        },
+        {
+            "name": "may",
+            "en": "May",
+            "pl": "Maj"
+        },
+        {
+            "name": "june",
+            "en": "June",
+            "pl": "Czerwiec"
+        },
+        {
+            "name": "july",
+            "en": "July",
+            "pl": "Lipiec"
+        },
+        {
+            "name": "august",
+            "en": "August",
+            "pl": "Sierpień"
+        },
+        {
+            "name": "september",
+            "en": "September",
+            "pl": "Wrzesień"
+        },
+        {
+            "name": "october",
+            "en": "October",
+            "pl": "Październik"
+        },
+        {
+            "name": "november",
+            "en": "November",
+            "pl": "Listopad"
+        },
+        {
+            "name": "december",
+            "en": "December",
+            "pl": "Grudzień"
+        },
+        {
+            "name": "monday",
+            "en": "Monday",
+            "pl": "Poniedziałek"
+        },
+        {
+            "name": "tuesday",
+            "en": "Tuesday",
+            "pl": "Wtorek"
+        },
+        {
+            "name": "wednesday",
+            "en": "Wednesday",
+            "pl": "Środa"
+        },
+        {
+            "name": "thursday",
+            "en": "Thursday",
+            "pl": "Czwartek"
+        },
+        {
+            "name": "friday",
+            "en": "Friday",
+            "pl": "Piątek"
+        },
+        {
+            "name": "saturday",
+            "en": "Saturday",
+            "pl": "Sobota"
+        },
+        {
+            "name": "sunday",
+            "en": "Sunday",
+            "pl": "Niedziela"
+        },
+        {
+            "name": "no_result",
+            "en": "No result",
+            "pl": "Brak wyników"
+        }
+    ]
+}

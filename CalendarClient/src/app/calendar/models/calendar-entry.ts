@@ -1,8 +1,8 @@
 import { TemplateRef } from '@angular/core'
 
 export interface CalendarEntry {
-    start: Date
-    end: Date
+    start: string
+    end: string
     description: string
     color: string
     clickable?: boolean
