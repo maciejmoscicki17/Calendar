@@ -1,0 +1,22 @@
+<div id="list-view-wrapper">
+  <div class="list" (click)="$event.stopPropagation()">
+    @if(list){
+    <div
+      *ngFor="let item of list"
+      class="element"
+      [style.background-color]="item.color"
+      [style.color]="getContrastColor(item.color)"
+      (click)="eventClick(item)"
+    >
+      {{ item.description }}
+    </div>
+    } @else {
+    <p-skeleton
+      *ngFor="let _ of repeatedArray(10)"
+      width="100%"
+      height="50px"
+      styleClass="element"
+    ></p-skeleton>
+    }
+  </div>
+</div>

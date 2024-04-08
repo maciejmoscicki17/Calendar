@@ -1,0 +1,70 @@
+<div class="calendar-navigation" (click)="$event.stopPropagation()">
+  @if (showDailyNavigation) {
+  <div class="calendar-navigation-section">
+    <div class="header">
+      <div class="item">
+        {{ currentMonth }}
+      </div>
+
+      <div class="icons">
+        <i class="fa-solid fa-chevron-down" (click)="monthDown()"></i>
+        <i class="fa-solid fa-chevron-up" (click)="monthUp()"></i>
+      </div>
+    </div>
+    @if (weeks) {
+    <div class="content-box-month">
+      <div class="week-letters">
+        @for (w of weekLetters; track $index) {
+        <div class="letter">
+          {{ w }}
+        </div>
+        }
+      </div>
+      @for (week of weeks; track $index) {
+      <div class="calendar-week">
+        @if (week) { @for (day of week; track $index) {
+        <div
+          class="day"
+          (click)="goToDay(day)"
+          [ngClass]="{
+            today: isToday(day),
+            notCurrentMonth: isNotInCurrentMonth(day),
+            selectedDay: selectedDay(day)
+          }"
+        >
+          {{ day.number }}
+        </div>
+        } }
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+  <div
+    class="calendar-navigation-section"
+    [class.border-left]="showDailyNavigation"
+  >
+    <div class="header">
+      <div class="item">
+        {{ currentYear }}
+      </div>
+
+      <div class="icons">
+        <i class="fa-solid fa-chevron-down" (click)="yearDown()"></i>
+        <i class="fa-solid fa-chevron-up" (click)="yearUp()"></i>
+      </div>
+    </div>
+    <div class="content-box-year">
+      @for (month of months; track $index) {
+      <div
+        class="grid-item"
+        [class.selected-month]="isSelectedMonth(month)"
+        (click)="monthClicked(month, $event)"
+      >
+        {{ month }}
+      </div>
+      }
+    </div>
+  </div>
+</div>

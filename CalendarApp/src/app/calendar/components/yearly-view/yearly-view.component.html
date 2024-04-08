@@ -1,0 +1,44 @@
+@if(!loading){
+<div class="yearly-view-container">
+  @for (month of months; track $index) {
+  <div class="month-container">
+    <div class="monthName" (click)="goToMonth(month)">
+      {{ month.name }}
+    </div>
+    <div class="week-letters">
+      @for (letter of weekLetters; track $index) {
+      <div class="letter">
+        {{ letter }}
+      </div>
+      }
+    </div>
+    @for (week of month.weeks; track $index) {
+    <div class="week">
+      @for (day of week; track $index) {
+      <div
+        class="day"
+        (click)="showDetailsDialog(day.date, $event)"
+        [ngClass]="{
+          notCurrentMonth: !isDayInMonth(day.date, month.date),
+          today: isToday(day)
+        }"
+      >
+        {{ day.number }}
+        @if (hasPreview(day.date)) {
+        <div class="dot"></div>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>
+} @if (showDialog) {
+<details-dialog
+  [data]="detailsData"
+  [day]="detailsDay"
+  (closeDialog)="closeDialog()"
+  (onHide)="closeDialog()"
+></details-dialog>
+}

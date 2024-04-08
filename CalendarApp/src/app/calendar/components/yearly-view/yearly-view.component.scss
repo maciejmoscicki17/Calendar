@@ -1,0 +1,71 @@
+.yearly-view-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%/3, max(64px, 100%/5)), 1fr)
+  );
+  gap: 2rem;
+  .month-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    .monthName {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      cursor: pointer;
+    }
+    .week-letters {
+      display: flex;
+      justify-content: space-between;
+
+      .letter {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        font-weight: 600;
+        color: #2f4f4f;
+      }
+    }
+    .week {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      gap: 0.2rem;
+      justify-content: space-between;
+      min-height: 30px;
+
+      .notCurrentMonth {
+        color: lightgray;
+        &:has(.dot) .dot {
+          visibility: hidden;
+        }
+      }
+      .day {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        cursor: pointer;
+        position: relative;
+        border-radius: 4px;
+        &:is(.notCurrentMonth) > .dot {
+          visibility: hidden;
+        }
+        &:hover {
+          background-color: lightgray;
+        }
+        .dot {
+          position: absolute;
+          top: 95%;
+          left: 50%;
+          transform: translate(-50%, -80%);
+          height: 5px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          background-color: black;
+        }
+      }
+    }
+  }
+}

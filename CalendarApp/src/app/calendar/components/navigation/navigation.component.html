@@ -1,0 +1,21 @@
+<div class="navigation-wrapper">
+  <div>{{ dateDescription }}</div>
+  <p-dropdown
+    [options]="options"
+    [(ngModel)]="model"
+    placeholder="Select a City"
+  ></p-dropdown>
+  <div class="up-down-group">
+    <msbutton label="&#x25C0;" (onClick)="onLeftButtonClick()"></msbutton>
+    <msbutton label="&#x25B6;" (onClick)="onRightButtonClick()"></msbutton>
+  </div>
+</div>
+<!-- <div class="month-container" #monthContainer>
+    <div
+        *ngFor="let month of monthElements; let i = index"
+        class="month"
+        (click)="onClick()"
+    >
+        {{ month }}
+    </div>
+</div> -->

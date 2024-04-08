@@ -1,0 +1,39 @@
+#list-view-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .list {
+    margin-top: 5px;
+    width: clamp(100px, 60%, 800px);
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    gap: 10px;
+    padding: 12px;
+    box-shadow: 1px 0px 5px gray;
+    border-radius: 4px;
+    overflow: scroll;
+    .element {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 1px 0px 5px gray;
+      border-radius: 8px;
+      padding: 5px;
+      overflow: hidden;
+      flex: none;
+
+      &:hover {
+        background-color: lavender;
+        cursor: pointer;
+      }
+    }
+  }
+}

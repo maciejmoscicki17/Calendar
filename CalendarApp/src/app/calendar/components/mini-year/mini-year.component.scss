@@ -1,0 +1,109 @@
+.calendar-navigation {
+  position: absolute;
+  top: 100%;
+  display: flex;
+  padding: 5px;
+  flex-direction: row;
+  z-index: 10;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0 0 2px;
+  .border-left {
+    border-left: 1px solid lightgray;
+  }
+  .calendar-navigation-section {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+
+    .header {
+      cursor: default;
+      width: 100%;
+      height: 28px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
+      font-size: 1.25rem;
+
+      .icons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        cursor: pointer;
+        &i:hover {
+          background-color: lightgray;
+        }
+      }
+    }
+    .content-box-year {
+      height: 224px;
+      aspect-ratio: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+
+      .selected-month {
+        background-color: lightgray;
+      }
+      .grid-item {
+        font-size: 0.7em;
+        width: 1fr;
+        border-radius: 4px;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+
+        &:hover {
+          background-color: lightgray;
+        }
+      }
+      .calendar-week {
+        height: 100%;
+        background-color: aliceblue;
+        .day {
+          height: 100%;
+        }
+      }
+    }
+    .content-box-month {
+      height: 224px;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+
+      .week-letters {
+        display: flex;
+        flex-direction: row;
+        .letter {
+          flex: 1;
+          display: grid;
+          place-items: center;
+        }
+      }
+      .calendar-week {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        .day {
+          flex: 1;
+          height: 100%;
+          display: grid;
+          place-items: center;
+          border-radius: 4px;
+          &:hover {
+            background-color: lightgray;
+          }
+        }
+        .selectedDay {
+          background-color: lightgray;
+        }
+        .notCurrentMonth {
+          color: lightgray;
+        }
+      }
+    }
+  }
+}

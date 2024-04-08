@@ -1,0 +1,31 @@
+<div id="calendar-wrapper">
+  @if (showDialog) {
+  <details-dialog
+    [data]="detailsData"
+    [day]="detailsDay"
+    (closeDialog)="closeDialog()"
+    (onHide)="closeDialog()"
+  ></details-dialog>
+  } @if (weeks) {
+  <div class="header-container">
+    @for (day of days; track $index) {
+    <div class="day-header">
+      <span>{{ getTranslation(day) }}</span>
+    </div>
+    }
+  </div>
+  } @for (week of weeks; track $index) {
+  <div class="calendar-week">
+    @if(week){ @for (day of week; track $index) {
+    <div
+      class="day"
+      day-of-month
+      [day]="day"
+      (drop)="drop(day, $event)"
+      (dragover)="$event.preventDefault()"
+      (openDialog)="openDialog($event)"
+    ></div>
+    } }
+  </div>
+  }
+</div>
