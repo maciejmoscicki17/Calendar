@@ -47,7 +47,6 @@ export class MiniYearComponent {
     this.months = this.calendarService.months.map((x) =>
       this.translatorService.translate(x)
     );
-    console.log(this.months);
     this.currentMonth = this.months[this.initialDate.getMonth()];
     this.subs.add(
       this.calendarService.$calendarTypeChange.subscribe((x) => {

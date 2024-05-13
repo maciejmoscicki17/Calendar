@@ -9,13 +9,16 @@ import { MonthlyViewComponent } from './components/monthly-view/monthly-view.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule as Calendar } from 'primeng/calendar';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { ButtonComponent } from './components/button/button.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ListViewComponent } from './components/list-view';
 import { FormsModule } from '@angular/forms';
 import { MiniYearComponent } from './components/mini-year';
 import { YearlyViewComponent } from './components/yearly-view';
-
+import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [
     CalendarComponent,
@@ -27,6 +30,7 @@ import { YearlyViewComponent } from './components/yearly-view';
     ListViewComponent,
     MiniYearComponent,
     YearlyViewComponent,
+    EditDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +40,9 @@ import { YearlyViewComponent } from './components/yearly-view';
     ButtonModule,
     DropdownModule,
     FormsModule,
+    Calendar,
+    ColorPickerModule,
+    InputTextModule,
   ],
   exports: [CalendarComponent, ButtonComponent],
 })

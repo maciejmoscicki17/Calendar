@@ -1,45 +1,48 @@
 <p-dialog
-    [(visible)]="showPDialog"
-    [modal]="true"
-    [style]="{ width: '50vw' }"
-    [resizable]="false"
-    [dismissableMask]="true"
-    (onHide)="closeDialog()"
+  [(visible)]="showPDialog"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [resizable]="false"
+  [dismissableMask]="true"
+  (onHide)="closeDialog()"
 >
-    <ng-template pTemplate="header">
-        <span class="text-xl font-bold" style="color: red">{{
-            generateDayDescription()
-        }}</span>
-    </ng-template>
-    <div id="details-content">
-        <div *ngIf="data | async as events; else load">
-            <div *ngIf="events.length > 0">
-                <div
-                    *ngFor="let ev of events"
-                    class="data-card"
-                    [style.background-color]="ev.color"
-                    [style.color]="getContrastColor(ev.color)"
-                    [hidden]="hideOnDrag"
-                    [draggable]="ev.draggable"
-                    (dragstart)="dragStart(ev)"
-                    (dragend)="dragEnd(ev)"
-                    (click)="onClick(ev, $event)"
-                >
-                    {{ ev.description }}
-                </div>
-            </div>
-            <div *ngIf="events.length == 0">
-                {{ translationsEnum.no_result }}
-            </div>
+  <ng-template pTemplate="header">
+    <span class="text-xl font-bold">{{ generateDayDescription() }}</span>
+  </ng-template>
+  <div id="details-content">
+    <div *ngIf="data | async as events; else load">
+      <div *ngIf="events.length > 0">
+        <div
+          *ngFor="let ev of events"
+          class="data-card"
+          [style.background-color]="ev.color"
+          [style.color]="getContrastColor(ev.color)"
+          [hidden]="hideOnDrag"
+          [draggable]="ev.draggable"
+          (dragstart)="dragStart(ev)"
+          (dragend)="dragEnd(ev)"
+          (click)="onClick(ev, $event)"
+        >
+          {{ ev.description }}
         </div>
-
-        <ng-template #load>
-            <p-skeleton
-                *ngFor="let _ of repeatedArray(10)"
-                width="100%"
-                styleClass="mb-2"
-                borderRadius="16px"
-            ></p-skeleton>
-        </ng-template>
+      </div>
+      <div *ngIf="events.length == 0">
+        {{ translationsEnum.no_result }}
+      </div>
     </div>
+
+    <ng-template #load>
+      <p-skeleton
+        *ngFor="let _ of repeatedArray(10)"
+        width="100%"
+        styleClass="mb-2"
+        borderRadius="16px"
+      ></p-skeleton>
+    </ng-template>
+  </div>
 </p-dialog>
+
+@if(editing && editingEntry !== undefined){
+<edit-dialog [entry]="editingEntry" (onHide)="hideDialog()"></edit-dialog>
+
+}

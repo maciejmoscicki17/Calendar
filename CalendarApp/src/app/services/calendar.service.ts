@@ -4,18 +4,39 @@ import {
   CalendarEntry,
   CalendarTypeEnum,
   ICalendarService,
-} from '../../calendar/models';
+} from '../calendar/models';
 import { HttpClient } from '@angular/common/http';
 import { SelectItem } from 'primeng/api';
 import { Observable, of } from 'rxjs';
+
+export interface DateDto {
+  start: Date;
+  end: Date;
+  description: string;
+  color: string;
+}
 
 @Injectable()
 export class CalendarProviderService implements ICalendarService {
   url = 'https://localhost:7157/Event';
   constructor(private http: HttpClient) {}
+  putEvent(event: CalendarEntry): Observable<void> {
+    console.log('put', event);
+
+    return this.http.put<void>(this.url + '/PutEvent', event);
+  }
+  postEvent(event: CalendarEntry): Observable<void> {
+    const dto: DateDto = {
+      color: event.color,
+      description: event.description,
+      start: new Date(event.start),
+      end: new Date(event.end),
+    };
+    return this.http.post<void>(this.url + '/Event', dto);
+  }
   getCalendars(): Observable<SelectItem[]> {
     this.http.get(this.url).subscribe((x) => {
-      console.warn(x);
+      console.warn('getCalendars', x);
     });
     return of([]);
   }
@@ -35,6 +56,6 @@ export class CalendarProviderService implements ICalendarService {
     return this.http.get<Date[]>(`${this.url}/Dates`);
   }
   onDrop(dropEvent: CalendarDropEvent): Observable<CalendarEntry[]> {
-    return this.http.get<CalendarEntry[]>(this.url);
+    return this.http.post<CalendarEntry[]>(`${this.url}/Drop`, dropEvent);
   }
 }

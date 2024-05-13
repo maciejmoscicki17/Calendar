@@ -3,14 +3,16 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
-import { CalendarService } from '../../services';
+import { CalendarService, TranslatorService } from '../../services';
 import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng/api';
-import { CalendarTypeEnum } from '../../models';
+import { CalendarTypeEnum, TranslationsEnum } from '../../models';
 
 @Component({
   selector: 'navigation',
@@ -29,31 +31,58 @@ import { CalendarTypeEnum } from '../../models';
     ]),
   ],
 })
-export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
+export class NavigationComponent implements OnInit, OnDestroy {
   @ViewChild('monthContainer', { static: true })
   monthContainer!: ElementRef<HTMLDivElement>;
-  monthElements: string[] = ['Month 0', 'Month 1', 'Month 2'];
-  el1: string[] = ['Month 0'];
-  el2: string[] = ['Month 0', 'Month 1'];
+
+  @Output() viewChange = new EventEmitter<SelectItem<number>>();
 
   model: any;
 
-  options: SelectItem<any>[];
+  dateDescription = this.getDateDescription();
+
+  views = [
+    TranslationsEnum.day,
+    TranslationsEnum.week,
+    TranslationsEnum.month,
+    TranslationsEnum.year,
+    TranslationsEnum.list,
+  ].map((val, ix) => {
+    return {
+      value: ix,
+      label: this.translationService.translate(val),
+    } as SelectItem<number>;
+  });
 
   private subscription = new Subscription();
   private currentDate?: Date;
 
-  get dateDescription(): string | undefined {
-    const dateString = this.currentDate?.getMonth();
-    return dateString?.toString();
+  getDateDescription(): string | undefined {
+    if (this.currentDate === undefined) return '';
+    const { currentDate } = this;
+    const { currentCalendar } = this.calendarService;
+
+    switch (currentCalendar) {
+      case CalendarTypeEnum.daily:
+      case CalendarTypeEnum.list:
+        return `${currentDate.getDate()}.${
+          currentDate.getMonth() + 1
+        }.${currentDate.getFullYear()}`;
+      case CalendarTypeEnum.weekly:
+      case CalendarTypeEnum.monthly:
+        return `${currentDate.getMonth() + 1}.${currentDate.getFullYear()}`;
+      case CalendarTypeEnum.yearly:
+        return currentDate.getFullYear().toString();
+      default:
+        return '';
+    }
   }
 
-  currentIndex = 1; // Start with the middle element as active
-
-  constructor(private calendarService: CalendarService) {
-    const types = this.enumToSelectItems(CalendarTypeEnum);
-    this.options = types;
-    this.model = this.options[2].value;
+  constructor(
+    private calendarService: CalendarService,
+    private translationService: TranslatorService
+  ) {
+    this.model = this.views[2].value;
   }
   ngOnInit(): void {
     this.subscription.add(
@@ -61,33 +90,20 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
         (date) => (this.currentDate = date)
       )
     );
+    this.subscription.add(
+      this.calendarService.$calendarTypeChange.subscribe((x) => {
+        this.dateDescription = this.getDateDescription();
+        console.log(x, this.dateDescription);
+      })
+    );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  fade = false;
-
-  ngAfterViewInit(): void {
-    // this.updateStyles()
-  }
-
-  onClick() {
-    // Update the currentIndex and trigger the animation
-    // const temp = (this.currentIndex + 1) % this.monthElements.length
-    const temparr = [...this.monthElements];
-    temparr.push(temparr.shift() as string);
-    this.monthElements = temparr;
-    // this.currentIndex = (this.currentIndex + 1) % this.monthElements.length
-    // this.updateStyles()
-  }
-
-  updateStyles() {
-    setTimeout(() => {
-      if (this.monthElements[0]) {
-      }
-    }, 200);
+  onChange(ev: number) {
+    this.viewChange.emit(this.views.find((x) => x.value === ev));
   }
 
   onLeftButtonClick() {
@@ -95,14 +111,5 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
   }
   onRightButtonClick() {
     this.calendarService.arrowRight();
-  }
-
-  enumToSelectItems(enumObject: any): SelectItem<number>[] {
-    return Object.keys(enumObject)
-      .filter((key) => isNaN(Number(enumObject[key])))
-      .map((key) => ({
-        label: enumObject[key],
-        value: +key,
-      }));
   }
 }

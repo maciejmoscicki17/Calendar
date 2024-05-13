@@ -1,92 +1,108 @@
 import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-} from '@angular/core'
-import { CalendarTypeEnum, CalendarEntry, TranslationsEnum } from '../../models'
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  CalendarTypeEnum,
+  CalendarEntry,
+  TranslationsEnum,
+} from '../../models';
 
-import { Observable, Subscription, of } from 'rxjs'
-import { CalendarService } from '../../services'
+import { Observable, Subscription, of } from 'rxjs';
+import { CalendarService } from '../../services';
 @Component({
-    selector: 'details-dialog',
-    templateUrl: './details-dialog.component.html',
-    styleUrls: ['./details-dialog.component.scss', '../../styles.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'details-dialog',
+  templateUrl: './details-dialog.component.html',
+  styleUrls: ['./details-dialog.component.scss', '../../styles.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsDialogComponent implements OnInit {
-    showPDialog = true
-    hideOnDrag = false
+  showPDialog = true;
+  hideOnDrag = false;
 
-    translationsEnum = TranslationsEnum
+  translationsEnum = TranslationsEnum;
 
-    subs = new Subscription()
+  subs = new Subscription();
 
-    @Input('data') data!: Observable<CalendarEntry[]>
-    @Input('day') day!: Date
-    @Output('onHide') onHide = new EventEmitter()
+  @Input('data') data!: Observable<CalendarEntry[]>;
+  @Input('day') day!: Date;
+  @Output('onHide') onHide = new EventEmitter();
 
-    readonly days = [
-        TranslationsEnum.monday,
-        TranslationsEnum.tuesday,
-        TranslationsEnum.wednesday,
-        TranslationsEnum.thursday,
-        TranslationsEnum.friday,
-        TranslationsEnum.saturday,
-        TranslationsEnum.sunday,
-    ]
+  editing = false;
+  editingEntry?: CalendarEntry;
 
-    constructor(
-        private calendarService: CalendarService,
-        private changeDetector: ChangeDetectorRef
-    ) {
-        this.showPDialog = true
-    }
+  readonly days = [
+    TranslationsEnum.monday,
+    TranslationsEnum.tuesday,
+    TranslationsEnum.wednesday,
+    TranslationsEnum.thursday,
+    TranslationsEnum.friday,
+    TranslationsEnum.saturday,
+    TranslationsEnum.sunday,
+  ];
 
-    ngOnInit(): void {}
-    visible = false
-    showDialog() {
-        this.visible = true
-    }
+  constructor(
+    private calendarService: CalendarService,
+    private changeDetector: ChangeDetectorRef
+  ) {
+    this.showPDialog = true;
+  }
 
-    generateDayDescription(): string {
-        return 'toImplement'
-    }
+  ngOnInit(): void {}
+  visible = false;
+  showDialog() {
+    this.visible = true;
+  }
 
-    getContrastColor(color: string): string {
-        return this.calendarService.getContrastColor(color)
-    }
+  generateDayDescription(): string {
+    return `${this.day.getDate()}.${
+      this.day.getMonth() + 1
+    }.${this.day.getFullYear()}`;
+  }
 
-    onClick(event: CalendarEntry, ev: Event): void {
-        ev.stopPropagation()
-        console.error('onclick to implement on detailsDialog')
-    }
+  getContrastColor(color: string): string {
+    return this.calendarService.getContrastColor(color);
+  }
 
-    dragStart(ev: CalendarEntry) {
-        this.showPDialog = false
-        this.calendarService.onDragStart(ev)
-        this.hideOnDrag = true
-        this.changeDetector.detectChanges()
-    }
+  onClick(event: CalendarEntry, ev: Event): void {
+    ev.stopPropagation();
+    this.editingEntry = event;
+    this.editing = true;
+  }
 
-    dragEnd(ev: any) {
-        this.showPDialog = true
-        this.changeDetector.detectChanges()
-    }
+  dragStart(ev: CalendarEntry) {
+    this.showPDialog = false;
+    this.calendarService.onDragStart(ev, new Date());
+    this.hideOnDrag = true;
+    this.changeDetector.detectChanges();
+  }
 
-    goToDay(day: Date): void {
-        this.calendarService.goToDay(day)
-        this.calendarService.changeCalendar(CalendarTypeEnum.daily)
-    }
+  dragEnd(ev: any) {
+    this.showPDialog = true;
+    this.changeDetector.detectChanges();
+  }
 
-    closeDialog(): void {
-        this.onHide.emit()
-    }
+  goToDay(day: Date): void {
+    this.calendarService.goToDay(day);
+    this.calendarService.changeCalendar(CalendarTypeEnum.daily);
+  }
 
-    repeatedArray(count: number): number[] {
-        return Array(count).fill(0)
-    }
+  closeDialog(): void {
+    console.log('onHide');
+    this.onHide.emit();
+  }
+
+  repeatedArray(count: number): number[] {
+    return Array(count).fill(0);
+  }
+
+  hideDialog() {
+    this.editing = false;
+    this.editingEntry = undefined;
+  }
 }

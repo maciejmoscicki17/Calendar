@@ -1,6 +1,6 @@
 <div
   *ngIf="day"
-  class="proman-calendar-day"
+  class="calendar-day"
   (click)="setDay()"
   (dragover)="$event.preventDefault()"
   [style.background-color]="isCurrentMonth() ? 'white' : 'silver'"
@@ -18,26 +18,28 @@
       <div class="dots" (click)="openDialog(day, $event)">
         &#x2022;&#x2022;&#x2022;
       </div>
-      }
-
-      <ng-container *ngFor="let data of day.entries; let i = index">
-        <div
-          *ngIf="i < visibleEvents - 1 || day.entries.length === visibleEvents"
-          class="event-card"
-          [style.background-color]="data.color"
-          [draggable]="data.draggable"
-          (dragstart)="dragStart(data)"
-          (click)="click(data)"
+      } @for (data of day.entries; track $index) { @if ($index < visibleEvents
+      || day.entries.length === visibleEvents) {
+      <div
+        class="event-card"
+        [style.background-color]="data.color"
+        [draggable]="data.draggable"
+        (dragstart)="dragStart(data)"
+        (click)="click(data)"
+      >
+        <p
+          [style.color]="getContrastColor(data.color)"
+          class="event-opis"
+          for="data"
         >
-          <p
-            [style.color]="getContrastColor(data.color)"
-            class="event-opis"
-            for="data"
-          >
-            {{ data.description }}
-          </p>
-        </div>
-      </ng-container>
+          {{ data.description }}
+        </p>
+      </div>
+      } }
     </div>
   </div>
 </div>
+@if(editing && editingEntry !== undefined){
+<edit-dialog [entry]="editingEntry" (onHide)="hideDialog()"></edit-dialog>
+
+}

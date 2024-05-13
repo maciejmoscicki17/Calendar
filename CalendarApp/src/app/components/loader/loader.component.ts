@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LoaderService } from '../services/loader.service';
+import { LoaderService } from '../../services/loader.service';
 import { Observable } from 'rxjs';
 
 @Component({

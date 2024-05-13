@@ -1,10 +1,11 @@
 <div class="navigation-wrapper">
-  <div>{{ dateDescription }}</div>
   <p-dropdown
-    [options]="options"
+    [options]="views"
     [(ngModel)]="model"
+    (ngModelChange)="onChange($event)"
     placeholder="Select a City"
   ></p-dropdown>
+  <div>{{ dateDescription }}</div>
   <div class="up-down-group">
     <msbutton label="&#x25C0;" (onClick)="onLeftButtonClick()"></msbutton>
     <msbutton label="&#x25B6;" (onClick)="onRightButtonClick()"></msbutton>

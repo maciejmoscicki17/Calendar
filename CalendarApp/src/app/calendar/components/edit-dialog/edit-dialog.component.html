@@ -1,0 +1,43 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [resizable]="false"
+  [dismissableMask]="true"
+  (onHide)="closeDialog()"
+>
+  <!-- appendTo="body" -->
+  <ng-template pTemplate="header">
+    <span class="text-xl font-bold"
+      >Editing event: {{ entry.description }}</span
+    >
+  </ng-template>
+
+  <div id="edit-dialog-body">
+    <div>
+      Description
+      <input type="text" pInputText [(ngModel)]="description" />
+    </div>
+    <div>
+      Start
+      <p-calendar
+        [(ngModel)]="startModel"
+        [showTime]="true"
+        [showSeconds]="true"
+        appendTo="body"
+      ></p-calendar>
+      End
+      <p-calendar
+        [(ngModel)]="endModel"
+        [showTime]="true"
+        [showSeconds]="true"
+        appendTo="body"
+      ></p-calendar>
+    </div>
+    <div>
+      Color
+      <p-colorPicker [(ngModel)]="color" appendTo="body"></p-colorPicker>
+    </div>
+    <msbutton label="Submit" (onClick)="onSubmit()"></msbutton>
+  </div>
+</p-dialog>

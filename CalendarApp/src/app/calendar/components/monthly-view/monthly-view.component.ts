@@ -15,7 +15,7 @@ import {
 } from '../../models';
 
 import { Observable, Subscription, of } from 'rxjs';
-import { CalendarService } from '../../services';
+import { CalendarService, TranslatorService } from '../../services';
 
 @Component({
   selector: 'monthly-view',
@@ -42,15 +42,15 @@ export class MonthlyViewComponent implements OnInit {
   private subs = new Subscription();
 
   getTranslation(day: TranslationsEnum) {
-    return 'aha';
-    // return this.translationService.getTranslation(day);
+    return this.translationService.translate(day);
   }
 
   constructor(
     @Inject(CALENDAR_TOKEN)
     providerService: ICalendarService,
     private calendarService: CalendarService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private translationService: TranslatorService
   ) {}
   ngOnInit(): void {
     this.subs.add(
@@ -110,14 +110,16 @@ export class MonthlyViewComponent implements OnInit {
   getContrastColor(hex: string): string {
     return this.calendarService.getContrastColor(hex);
   }
-  @HostListener('document:drop')
-  private onDrop() {
-    this.calendarService.dragged = undefined;
-  }
+
   drop(dzien: CalendarDay, event: Event) {
     event.stopPropagation();
+    console.log(dzien, event);
     this.calendarService.onDrop(
-      new CalendarDropEvent(this.calendarService.dragged!, dzien.date)
+      new CalendarDropEvent(
+        this.calendarService.dragged!,
+        this.calendarService.dragStartDate!,
+        dzien.date
+      )
     );
     this.calendarService.dragged = undefined;
   }

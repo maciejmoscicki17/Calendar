@@ -1,7 +1,8 @@
-<navigation></navigation>
-<!-- <div style="position: relative">
-  <calendar-mini-year></calendar-mini-year>
-</div> -->
-<yearly-view></yearly-view>
+<navigation (viewChange)="onViewChange($event)"></navigation>
+@switch (currentView) { @case (2) {
 <monthly-view></monthly-view>
+} @case (3) {
+<yearly-view></yearly-view>
+} @case (4) {
 <list-view></list-view>
+} @default { aha }}

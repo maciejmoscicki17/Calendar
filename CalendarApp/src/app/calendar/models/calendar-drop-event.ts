@@ -1,8 +1,9 @@
-import { CalendarEntry } from '.'
+import { CalendarEntry } from '.';
 
 export class CalendarDropEvent {
-    constructor(
-        public object: CalendarEntry,
-        public day: Date
-    ) {}
+  constructor(
+    public entry: CalendarEntry,
+    public from: Date,
+    public to: Date
+  ) {}
 }

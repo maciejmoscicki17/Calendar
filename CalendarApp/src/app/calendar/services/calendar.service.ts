@@ -12,6 +12,7 @@ import {
   TranslationsEnum,
 } from '../models';
 import { DataAccessService } from '.';
+import { ColorsService } from './colors.service';
 
 @Injectable()
 export class CalendarService implements OnDestroy {
@@ -33,6 +34,7 @@ export class CalendarService implements OnDestroy {
   loading = false;
   currentCalendar = CalendarTypeEnum.monthly;
   dragged: CalendarEntry | undefined;
+  dragStartDate: Date | undefined = undefined;
   lastRequest: Subscription | undefined;
   private visibleEvents = 3;
   private showDateNav = false;
@@ -69,7 +71,8 @@ export class CalendarService implements OnDestroy {
   constructor(
     @Inject(CALENDAR_TOKEN)
     private providerService: ICalendarService,
-    private dataAccess: DataAccessService
+    private dataAccess: DataAccessService,
+    private colorsService: ColorsService
   ) {
     this.settings = new CalendarSettings();
     const date = new Date();
@@ -139,6 +142,9 @@ export class CalendarService implements OnDestroy {
   }
 
   getContrastColor(hex: string): string {
+    if (hex.charAt(0) !== '#') {
+      hex = this.colorsService.getColor(hex);
+    }
     var hexColor = hex.substring(1);
     const radix = 16;
     var r = parseInt(hexColor.substring(0, 2), radix);
@@ -168,11 +174,39 @@ export class CalendarService implements OnDestroy {
     this.sub.unsubscribe();
   }
 
+  onDragStart(e: CalendarEntry, startDate: Date) {
+    console.warn(e, startDate);
+    this.dragged = e;
+    this.dragStartDate = startDate;
+  }
+
   onDrop(e: CalendarDropEvent): void {
+    console.log('from', e.from);
+    console.log('to', e.to);
+    console.log('event', e.entry);
+    if (this.dragStartDate === undefined) {
+      return;
+    }
+    if (this.areSameDay(e.from, e.to)) {
+      return;
+    }
+
     this.providerService.onDrop(e).subscribe((x) => {
       this.data = x;
       this.$dataChanged.next(true);
     });
+  }
+
+  areSameDay(date1: Date, date2: Date): boolean {
+    const year1 = date1.getFullYear();
+    const month1 = date1.getMonth();
+    const day1 = date1.getDate();
+
+    const year2 = date2.getFullYear();
+    const month2 = date2.getMonth();
+    const day2 = date2.getDate();
+
+    return year1 === year2 && month1 === month2 && day1 === day2;
   }
 
   goToDay(data: Date = new Date()): void {
@@ -338,9 +372,7 @@ export class CalendarService implements OnDestroy {
     return (value +=
       this.currentDate.getMonth() + 1 + ' ' + this.currentDate.getFullYear());
   }
-  onDragStart(e: CalendarEntry) {
-    this.dragged = e;
-  }
+
   goToDayView(): void {
     this.changeCalendar(CalendarTypeEnum.daily);
   }

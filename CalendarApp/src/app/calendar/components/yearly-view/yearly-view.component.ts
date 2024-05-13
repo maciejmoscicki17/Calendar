@@ -70,7 +70,8 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     @Inject(CALENDAR_TOKEN)
     private providerService: ICalendarService,
-    private dataAccessService: DataAccessService
+    private dataAccessService: DataAccessService,
+    private translationService: TranslatorService
   ) {
     this.currentYear = this.calendarService.currentDate;
     this.subs.add(
@@ -93,7 +94,6 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
 
   update(): void {
     this.getRoczny().subscribe((x) => {
-      console.log('roczny', x);
       this.yearlyPreview = x;
       this.generateYearlyCalendar();
     });
@@ -131,6 +131,7 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
       this.months.push(new MonthExtension(new Date(monthCopy), weeks, name));
       monthCopy.setMonth(i + 1);
     }
+    console.log('false');
     this.loading = false;
     this.changeDetector.detectChanges();
   }
@@ -177,7 +178,6 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
       d1.setHours(0, 0, 0, 0);
       let d2 = new Date(date);
       d2.setHours(0, 0, 0, 0);
-      console.log(d1.getTime(), d2.getTime());
       return d1.getTime() === d2.getTime();
     });
   }

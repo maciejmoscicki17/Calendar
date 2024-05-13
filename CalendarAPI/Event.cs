@@ -10,7 +10,9 @@ namespace CalendarAPI
         public string Color { get; set; }
         public bool? Clickable { get; set; }
         public bool? Draggable { get; set; }
-        public Event(DateTime Start, DateTime End, string Description, string Color, bool? Clickable, bool? Draggable) { 
+        public int Id { get; set; }
+        public Event(int Id, DateTime Start, DateTime End, string Description, string Color, bool? Clickable, bool? Draggable) { 
+            this.Id = Id;
             this.Start = Start;
             this.End = End;
             this.Description = Description;
