@@ -22,7 +22,6 @@ export class CalendarService implements OnDestroy {
   public $showDetailsDialog = new Subject<CalendarDayDetails>();
   public $dataChanged = new Subject();
   public $triggerLoader = new BehaviorSubject<boolean>(false);
-  public $calendarTypeChange = new BehaviorSubject(CalendarTypeEnum.monthly);
   public $eventVisibilityChange = new BehaviorSubject<number>(
     this.getVisibleEvents()
   );
@@ -32,7 +31,9 @@ export class CalendarService implements OnDestroy {
   data: CalendarEntry[] = [];
   private readonly sub = new Subscription();
   loading = false;
-  currentCalendar = CalendarTypeEnum.monthly;
+  $currentCalendar = new BehaviorSubject<CalendarTypeEnum>(
+    CalendarTypeEnum.monthly
+  );
   dragged: CalendarEntry | undefined;
   dragStartDate: Date | undefined = undefined;
   lastRequest: Subscription | undefined;
@@ -83,14 +84,13 @@ export class CalendarService implements OnDestroy {
 
   setParams(date: Date, calendarType = CalendarTypeEnum.monthly) {
     this.currentDate = date;
-    this.currentCalendar = calendarType;
+    this.$currentCalendar.next(calendarType);
     this.getData();
   }
 
   public changeCalendar(type: CalendarTypeEnum): void {
-    this.currentCalendar = type;
+    this.$currentCalendar.next(type);
     this.getData();
-    this.$calendarTypeChange.next(type);
   }
 
   public getData(): void {
@@ -102,24 +102,10 @@ export class CalendarService implements OnDestroy {
     this.lastRequest = new Subscription();
     this.lastRequest.add(
       this.dataAccess
-        .getEvents(this.currentDate, this.currentCalendar, [])
+        .getEvents(this.currentDate, this.$currentCalendar.getValue(), [])
         .subscribe((x) => {
           this.data = x;
-          let startDate = new Date(this.currentDate);
-          startDate.setHours(0, 0, 0, 0);
-          let endDate = new Date(this.currentDate);
-          endDate.setHours(23, 59, 59, 999);
-
-          this.currentDaySelection = new CalendarDay(
-            this.currentDate.getDate(),
-            this.data.filter((x) => {
-              return (
-                x.start <= endDate.toDateString() &&
-                x.end >= startDate.toDateString()
-              );
-            }),
-            this.currentDate
-          );
+          this.updateCurrentDaySelection(this.currentDate);
           this.$triggerLoader.next(false);
           this.$dataChanged.next(true);
         })
@@ -175,15 +161,11 @@ export class CalendarService implements OnDestroy {
   }
 
   onDragStart(e: CalendarEntry, startDate: Date) {
-    console.warn(e, startDate);
     this.dragged = e;
     this.dragStartDate = startDate;
   }
 
   onDrop(e: CalendarDropEvent): void {
-    console.log('from', e.from);
-    console.log('to', e.to);
-    console.log('event', e.entry);
     if (this.dragStartDate === undefined) {
       return;
     }
@@ -211,7 +193,8 @@ export class CalendarService implements OnDestroy {
 
   goToDay(data: Date = new Date()): void {
     this.currentDate = data;
-    this.getData();
+    this.updateCurrentDaySelection(this.currentDate);
+    this.goToDayView();
   }
 
   goToWeek(data: Date = new Date()): void {
@@ -220,7 +203,7 @@ export class CalendarService implements OnDestroy {
   }
 
   arrowLeft(): void {
-    switch (this.currentCalendar) {
+    switch (this.$currentCalendar.getValue()) {
       case CalendarTypeEnum.monthly:
         this.previousMonth();
         break;
@@ -237,7 +220,7 @@ export class CalendarService implements OnDestroy {
     this.getData();
   }
   arrowRight(): void {
-    switch (this.currentCalendar) {
+    switch (this.$currentCalendar.getValue()) {
       case CalendarTypeEnum.monthly:
         this.nextMonth();
         break;
@@ -366,7 +349,7 @@ export class CalendarService implements OnDestroy {
 
   getCalendarDescription(): string {
     let value = '';
-    if (this.currentCalendar === CalendarTypeEnum.daily)
+    if (this.$currentCalendar.getValue() === CalendarTypeEnum.daily)
       value += this.currentDaySelection.number + ' ';
 
     return (value +=
@@ -404,5 +387,20 @@ export class CalendarService implements OnDestroy {
     previousMonday.setDate(inputDate.getDate() - daysToSubtract);
 
     return previousMonday;
+  }
+
+  updateCurrentDaySelection(date: Date) {
+    let startDate = new Date(date);
+    startDate.setHours(0, 0, 0, 0);
+    let endDate = new Date(date);
+    endDate.setHours(23, 59, 59, 999);
+
+    this.currentDaySelection = new CalendarDay(
+      date.getDate(),
+      this.data.filter((x) => {
+        return new Date(x.start) <= endDate && new Date(x.end) >= startDate;
+      }),
+      date
+    );
   }
 }

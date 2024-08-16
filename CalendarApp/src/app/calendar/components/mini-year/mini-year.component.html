@@ -46,14 +46,11 @@
     [class.border-left]="showDailyNavigation"
   >
     <div class="header">
+      <div class="icons" (click)="yearDown()">↓</div>
       <div class="item">
         {{ currentYear }}
       </div>
-
-      <div class="icons">
-        <i class="fa-solid fa-chevron-down" (click)="yearDown()"></i>
-        <i class="fa-solid fa-chevron-up" (click)="yearUp()"></i>
-      </div>
+      <div class="icons" (click)="yearUp()">↑</div>
     </div>
     <div class="content-box-year">
       @for (month of months; track $index) {

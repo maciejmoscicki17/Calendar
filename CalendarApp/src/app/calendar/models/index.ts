@@ -8,4 +8,6 @@ export * from './calendar-token';
 export * from './calendar-type-enum';
 export * from './daily-view-interval-height.type';
 export * from './daily-view-time-interval.type';
+export * from './entry-extension.class';
+export * from './translation';
 export * from './translations.enum';

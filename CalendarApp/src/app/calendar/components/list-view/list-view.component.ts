@@ -28,6 +28,9 @@ export class ListViewComponent implements OnInit {
   @Output() close = new EventEmitter();
   list: CalendarEntry[] = [];
 
+  editing = false;
+  editingEntry?: CalendarEntry;
+
   constructor(
     private calendarService: CalendarService,
     @Inject(CALENDAR_TOKEN)
@@ -61,8 +64,8 @@ export class ListViewComponent implements OnInit {
   }
 
   eventClick(item: CalendarEntry): void {
-    console.error('Event click not implemented');
-    // item.actionButtons[0].clickEvent.emit();
+    this.editing = true;
+    this.editingEntry = item;
   }
 
   repeatedArray(count: number): number[] {
@@ -71,5 +74,10 @@ export class ListViewComponent implements OnInit {
 
   getContrastColor(color: string): string {
     return this.calendarService.getContrastColor(color);
+  }
+
+  hideDialog() {
+    this.editing = false;
+    this.editingEntry = undefined;
   }
 }

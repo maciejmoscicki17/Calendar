@@ -80,9 +80,9 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
         this.update();
       })
     );
-    this.subs.add(
-      this.calendarService.$calendarTypeChange.subscribe((x) => {})
-    );
+    // this.subs.add(
+    //   this.calendarService.$currentCalendar.subscribe((x) => {})
+    // );
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -131,7 +131,6 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
       this.months.push(new MonthExtension(new Date(monthCopy), weeks, name));
       monthCopy.setMonth(i + 1);
     }
-    console.log('false');
     this.loading = false;
     this.changeDetector.detectChanges();
   }
@@ -143,7 +142,7 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
     return this.providerService.getEventDates(
       date,
       [],
-      this.calendarService.currentCalendar
+      this.calendarService.$currentCalendar.getValue()
     );
   }
 
@@ -189,6 +188,6 @@ export class YearlyViewComponent implements OnInit, OnDestroy {
   }
   goToMonth(month: MonthExtension): void {
     this.calendarService.setParams(month.date);
-    this.calendarService.$calendarTypeChange.next(CalendarTypeEnum.monthly);
+    this.calendarService.$currentCalendar.next(CalendarTypeEnum.monthly);
   }
 }

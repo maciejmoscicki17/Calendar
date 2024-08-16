@@ -1,8 +1,12 @@
 <navigation (viewChange)="onViewChange($event)"></navigation>
-@switch (currentView) { @case (2) {
+@switch (currentView) { @case (0) {
+<dialy-view></dialy-view>
+} @case (1) {
+<weekly-view></weekly-view>
+} @case (2) {
 <monthly-view></monthly-view>
 } @case (3) {
 <yearly-view></yearly-view>
 } @case (4) {
 <list-view></list-view>
-} @default { aha }}
+} @default { }}

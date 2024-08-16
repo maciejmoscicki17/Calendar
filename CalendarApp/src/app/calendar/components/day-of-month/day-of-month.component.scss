@@ -11,14 +11,6 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  .day-container {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: grid;
-    place-items: center;
-    height: min-content;
-  }
   .event-card {
     width: 90%;
     height: 20px;
@@ -53,12 +45,6 @@
     white-space: nowrap;
     user-select: none;
   }
-  .day-container {
-    position: relative;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-  }
 
   .day-holder {
     position: absolute;
@@ -67,6 +53,7 @@
     border-radius: 50%;
     top: 0;
     text-align: center;
+    cursor: pointer;
     &:hover {
       background-color: silver;
     }

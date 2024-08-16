@@ -19,6 +19,8 @@ import { MiniYearComponent } from './components/mini-year';
 import { YearlyViewComponent } from './components/yearly-view';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialyViewComponent } from './components/daily-view/daily-view.component';
+import { WeeklyViewComponent } from './components/weekly-view/weekly-view.component';
 @NgModule({
   declarations: [
     CalendarComponent,
@@ -31,6 +33,8 @@ import { InputTextModule } from 'primeng/inputtext';
     MiniYearComponent,
     YearlyViewComponent,
     EditDialogComponent,
+    DialyViewComponent,
+    WeeklyViewComponent,
   ],
   imports: [
     CommonModule,

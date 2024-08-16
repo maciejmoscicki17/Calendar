@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CALENDAR_TOKEN, CalendarEntry, ICalendarService } from '../../models';
 import { ColorsService } from '../../services/colors.service';
+import { CalendarService } from '../../services';
 
 @Component({
   selector: 'edit-dialog',
@@ -21,13 +22,30 @@ export class EditDialogComponent implements OnInit {
 
   constructor(
     @Inject(CALENDAR_TOKEN)
-    private providerService: ICalendarService
-  ) {}
+    private providerService: ICalendarService,
+    private calendarService: CalendarService
+  ) {
+    this._startModel = new Date();
+    this._endModel = new Date();
+  }
   colorsService = inject(ColorsService);
   visible = true;
 
-  startModel?: Date;
-  endModel?: Date;
+  _startModel: Date;
+  set startModel(date: Date) {
+    this._startModel = date;
+  }
+  get startModel() {
+    return this._startModel;
+  }
+  _endModel: Date;
+  set endModel(date: Date) {
+    this._endModel = date;
+  }
+  get endModel() {
+    return this._endModel;
+  }
+
   color?: string;
   description?: string;
 
@@ -40,13 +58,8 @@ export class EditDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    console.log('onhide');
     this.onHide.next();
     this.visible = false;
-  }
-
-  log() {
-    console.log(this.color);
   }
 
   onSubmit() {
@@ -63,7 +76,11 @@ export class EditDialogComponent implements OnInit {
         draggable: this.entry.draggable,
         tooltip: this.entry.tooltip,
       };
-      this.providerService.putEvent(entry).subscribe((x) => console.warn(x));
+      this.providerService.putEvent(entry).subscribe((x) => {
+        this.calendarService.data = x;
+        this.calendarService.$dataChanged.next(true);
+      });
+      this.closeDialog();
     }
   }
 }

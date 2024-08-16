@@ -18,14 +18,16 @@
       Description
       <input type="text" pInputText [(ngModel)]="description" />
     </div>
-    <div>
-      Start
+    <div class="start-end-container">
+      <span>Start</span>
       <p-calendar
         [(ngModel)]="startModel"
         [showTime]="true"
         [showSeconds]="true"
         appendTo="body"
       ></p-calendar>
+    </div>
+    <div class="start-end-container">
       End
       <p-calendar
         [(ngModel)]="endModel"

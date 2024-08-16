@@ -17,5 +17,5 @@ export interface ICalendarService {
   ): Observable<Date[]>;
   onDrop(dropEvent: CalendarDropEvent): Observable<CalendarEntry[]>;
   postEvent(event: CalendarEntry): Observable<void>;
-  putEvent(event: any): Observable<void>;
+  putEvent(event: any): Observable<CalendarEntry[]>;
 }

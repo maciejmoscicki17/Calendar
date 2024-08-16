@@ -1,0 +1,48 @@
+<div id="calendar-wrapper" [class.weekly]="hideHours">
+  <div *ngIf="day" class="day-header">{{ getDayOfWeek(day.date) }}</div>
+  <div id="background" *ngIf="day">
+    <div
+      id="time-marker"
+      [style.top]="timeMarkerPosition()"
+      *ngIf="isToday()"
+    ></div>
+    <div
+      id="time-marker-ball"
+      [style.top]="timeMarkerPosition()"
+      *ngIf="isToday()"
+    ></div>
+    <ng-container *ngIf="firstLoad">
+      <div
+        *ngFor="let event of ext"
+        class="event"
+        [style.top]="event.top"
+        [style.height]="event.height"
+        [style.width]="eventWidth"
+        [style.left]="event.left"
+        [style.background-color]="event.entry.color"
+        [style.color]="getContrastColor(event.entry.color)"
+        (click)="onClick(event.entry)"
+        [style.cursor]="event.entry.clickable ? 'pointer' : 'unset'"
+        [draggable]="event.entry.draggable"
+        (dragstart)="dragStart(event)"
+      >
+        <div *ngIf="!event.isTextOverflowing" class="event-text">
+          {{ event.entry.description }}
+        </div>
+      </div>
+    </ng-container>
+    <div *ngFor="let i of hours; let ix = index" class="hour">
+      <div [hidden]="hideHours" class="hour-marker">
+        {{ i }}
+      </div>
+
+      <div class="timestamp-container">
+        <div
+          *ngFor="let j of intervalArray"
+          class="timestamp"
+          [style.height]="intervalHeight + 'px'"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

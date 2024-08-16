@@ -20,3 +20,8 @@
     }
   </div>
 </div>
+
+@if(editing && editingEntry !== undefined){
+<edit-dialog [entry]="editingEntry" (onHide)="hideDialog()"></edit-dialog>
+
+}

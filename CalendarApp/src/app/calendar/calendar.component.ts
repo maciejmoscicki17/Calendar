@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { CalendarService, DataAccessService } from './services';
 import { CALENDAR_TOKEN, CalendarTypeEnum, ICalendarService } from './models';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -15,6 +15,8 @@ export class CalendarComponent implements OnInit {
   language!: Observable<'en' | 'pl'>;
   @Input() loading!: BehaviorSubject<boolean>;
 
+  subscription = new Subscription();
+
   currentView: number = 2;
   constructor(
     @Inject(CALENDAR_TOKEN)
@@ -23,6 +25,11 @@ export class CalendarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.subscription.add(
+      this.calendarService.$currentCalendar.subscribe((x) => {
+        this.currentView = x;
+      })
+    );
     this.loading.next(true);
     this.providerService
       .getEvents(new Date(), new Date(), [], CalendarTypeEnum.daily)
@@ -36,28 +43,8 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  onViewChange(si: SelectItem<number>) {
+  onViewChange(si: any) {
     this.currentView = si.value;
-    console.warn('viewChange');
-    this.calendarService.currentCalendar = si.value;
-    this.calendarService.$calendarTypeChange.next(si.value);
-    // let dateStr = new Date(Date.now()).toDateString();
-    // this.providerService
-    //   .postEvent({
-    //     color: 'red',
-    //     description: 'aha aha',
-    //     start: dateStr,
-    //     end: dateStr,
-    //     tooltip: '',
-    //   })
-    //   .subscribe((x) =>
-    //     this.providerService
-    //       .getEvents(new Date(), new Date(), [], CalendarTypeEnum.daily)
-    //       .subscribe((x) => {
-    //         this.calendarService.data = x;
-    //         this.calendarService.$dataChanged.next(null);
-    //         this.loading.next(false);
-    //       })
-    //   );
+    this.calendarService.$currentCalendar.next(si.value);
   }
 }

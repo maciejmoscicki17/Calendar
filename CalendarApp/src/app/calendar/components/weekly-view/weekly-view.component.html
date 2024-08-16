@@ -1,0 +1,5 @@
+<div class="week-container" *ngIf="data">
+  <ng-container *ngFor="let day of data; let i = index">
+    <div [daily-view]="day" class="daily-view" [hideHours]="i !== 0"></div>
+  </ng-container>
+</div>

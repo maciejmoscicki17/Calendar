@@ -5,7 +5,7 @@ import { CalendarDay, CalendarTypeEnum } from '../../models';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'calendar-mini-year',
+  selector: 'mini-year',
   templateUrl: './mini-year.component.html',
   styleUrls: ['./mini-year.component.scss', '../../styles.scss'],
 })
@@ -49,10 +49,12 @@ export class MiniYearComponent {
     );
     this.currentMonth = this.months[this.initialDate.getMonth()];
     this.subs.add(
-      this.calendarService.$calendarTypeChange.subscribe((x) => {
+      this.calendarService.$currentCalendar.subscribe((x) => {
+        const currentCalendar =
+          this.calendarService.$currentCalendar.getValue();
         this.showDailyNavigation =
-          this.calendarService.currentCalendar === CalendarTypeEnum.daily ||
-          this.calendarService.currentCalendar === CalendarTypeEnum.weekly;
+          currentCalendar === CalendarTypeEnum.daily ||
+          currentCalendar === CalendarTypeEnum.weekly;
       })
     );
     this.updateWeeks();
@@ -151,7 +153,10 @@ export class MiniYearComponent {
   }
 
   goToDay(day: CalendarDay): void {
-    if (this.calendarService.currentCalendar == CalendarTypeEnum.weekly) {
+    if (
+      this.calendarService.$currentCalendar.getValue() ==
+      CalendarTypeEnum.weekly
+    ) {
       this.calendarService.goToWeek(day.date);
       return;
     }

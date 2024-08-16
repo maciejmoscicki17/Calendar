@@ -93,7 +93,6 @@ export class DetailsDialogComponent implements OnInit {
   }
 
   closeDialog(): void {
-    console.log('onHide');
     this.onHide.emit();
   }
 

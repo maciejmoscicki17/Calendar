@@ -88,17 +88,10 @@ export class DayOfMonthComponent implements OnInit, OnDestroy {
     this.calendarService.showDayDetails(szczegoly);
   }
   click(data: CalendarEntry): void {
-    // console.error('Click not implemented in DayOfMonth');
     this.editingEntry = data;
     this.editing = true;
-    console.log(
-      this.editing,
-      this.editingEntry,
-      this.editing && this.editingEntry !== undefined
-    );
   }
   hideDialog() {
-    console.log('hide');
     this.editing = false;
     this.editingEntry = undefined;
   }

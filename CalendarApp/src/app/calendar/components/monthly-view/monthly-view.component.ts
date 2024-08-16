@@ -59,7 +59,7 @@ export class MonthlyViewComponent implements OnInit {
       })
     );
     this.subs.add(
-      this.calendarService.$calendarTypeChange.subscribe(() => {
+      this.calendarService.$currentCalendar.subscribe(() => {
         this.generateCalendar();
       })
     );
@@ -113,7 +113,6 @@ export class MonthlyViewComponent implements OnInit {
 
   drop(dzien: CalendarDay, event: Event) {
     event.stopPropagation();
-    console.log(dzien, event);
     this.calendarService.onDrop(
       new CalendarDropEvent(
         this.calendarService.dragged!,

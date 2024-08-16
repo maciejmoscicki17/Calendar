@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   OnDestroy,
   OnInit,
   Output,
@@ -35,9 +36,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   @ViewChild('monthContainer', { static: true })
   monthContainer!: ElementRef<HTMLDivElement>;
 
-  @Output() viewChange = new EventEmitter<SelectItem<number>>();
-
   model: any;
+  showMenu = false;
 
   dateDescription = this.getDateDescription();
 
@@ -60,8 +60,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   getDateDescription(): string | undefined {
     if (this.currentDate === undefined) return '';
     const { currentDate } = this;
-    const { currentCalendar } = this.calendarService;
-
+    const currentCalendar = this.calendarService.$currentCalendar.getValue();
     switch (currentCalendar) {
       case CalendarTypeEnum.daily:
       case CalendarTypeEnum.list:
@@ -69,6 +68,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
           currentDate.getMonth() + 1
         }.${currentDate.getFullYear()}`;
       case CalendarTypeEnum.weekly:
+        return this.getWeeklyDescription(this.currentDate);
       case CalendarTypeEnum.monthly:
         return `${currentDate.getMonth() + 1}.${currentDate.getFullYear()}`;
       case CalendarTypeEnum.yearly:
@@ -84,6 +84,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
   ) {
     this.model = this.views[2].value;
   }
+
+  @HostListener('document:click')
+  private documentClicked() {
+    this.showMenu = false;
+  }
+
   ngOnInit(): void {
     this.subscription.add(
       this.calendarService.$currentDate.subscribe(
@@ -91,9 +97,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
       )
     );
     this.subscription.add(
-      this.calendarService.$calendarTypeChange.subscribe((x) => {
-        this.dateDescription = this.getDateDescription();
-        console.log(x, this.dateDescription);
+      this.calendarService.$currentCalendar.subscribe((x) => {
+        this.model = x;
+        this.updateDayDescription();
       })
     );
   }
@@ -103,13 +109,48 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   onChange(ev: number) {
-    this.viewChange.emit(this.views.find((x) => x.value === ev));
+    this.calendarService.$currentCalendar.next(ev);
   }
 
   onLeftButtonClick() {
     this.calendarService.arrowLeft();
+    this.updateDayDescription();
   }
   onRightButtonClick() {
     this.calendarService.arrowRight();
+    this.updateDayDescription();
+  }
+
+  updateDayDescription(): void {
+    this.currentDate = this.calendarService.currentDate;
+    this.dateDescription = this.getDateDescription();
+  }
+  getWeeklyDescription(date: Date): string {
+    const currentDate = new Date(date);
+
+    const dayOfWeek = currentDate.getDay();
+    const dayDiffToMonday = (dayOfWeek + 6) % 7;
+
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - dayDiffToMonday);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+    const formatDate = (date: Date): string => {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Miesiące są od 0 do 11
+      const year = date.getFullYear();
+      return `${day}.${month}.${year}`;
+    };
+    return `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)}`;
+  }
+
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.showMenu = !this.showMenu;
+  }
+  closeNavigationCalendar(): void {
+    this.documentClicked();
   }
 }

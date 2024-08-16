@@ -20,10 +20,8 @@ export interface DateDto {
 export class CalendarProviderService implements ICalendarService {
   url = 'https://localhost:7157/Event';
   constructor(private http: HttpClient) {}
-  putEvent(event: CalendarEntry): Observable<void> {
-    console.log('put', event);
-
-    return this.http.put<void>(this.url + '/PutEvent', event);
+  putEvent(event: CalendarEntry): Observable<CalendarEntry[]> {
+    return this.http.put<CalendarEntry[]>(this.url + '/PutEvent', event);
   }
   postEvent(event: CalendarEntry): Observable<void> {
     const dto: DateDto = {

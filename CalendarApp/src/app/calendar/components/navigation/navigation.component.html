@@ -3,20 +3,17 @@
     [options]="views"
     [(ngModel)]="model"
     (ngModelChange)="onChange($event)"
-    placeholder="Select a City"
+    placeholder="Select a view"
   ></p-dropdown>
-  <div>{{ dateDescription }}</div>
+  <div style="position: relative" (click)="toggleMenu($event)">
+    {{ dateDescription }}
+
+    @if (showMenu) {
+    <mini-year (closeNavigation)="closeNavigationCalendar()"></mini-year>
+    }
+  </div>
   <div class="up-down-group">
     <msbutton label="&#x25C0;" (onClick)="onLeftButtonClick()"></msbutton>
     <msbutton label="&#x25B6;" (onClick)="onRightButtonClick()"></msbutton>
   </div>
 </div>
-<!-- <div class="month-container" #monthContainer>
-    <div
-        *ngFor="let month of monthElements; let i = index"
-        class="month"
-        (click)="onClick()"
-    >
-        {{ month }}
-    </div>
-</div> -->
